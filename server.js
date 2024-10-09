@@ -9,6 +9,18 @@ const PORT = process.env.PORT || 9000;
 app.use(cors());
 app.use(express.json()); // Enable JSON body parsing
 
+const logger = (req, res, next) => {
+    console.log(`[API Called]: ${req.path}`);
+    console.log(`[Method]: ${req.method}`);
+    console.log(`[Params]:`, req.body);
+    console.log(`[Timestamp]:`, new Date().toISOString());
+    
+    next(); // Move to the next middleware or route handler
+  };
+
+app.use(logger);
+  
+
 // Route for getting chain activity
 app.post('/api/get-chain-activity', async (req, res) => {
   const { walletAddress } = req.body;
