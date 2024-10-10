@@ -273,6 +273,81 @@ app.post('/api/get-defi-positions', async (req, res) => {
     }
   });
   
+  // Route for risky bets tokens
+app.post('/api/get-risky-bets-tokens', async (req, res) => {
+    const { chain, max_market_cap, one_week_holders_change, one_week_net_volume_change_usd, one_month_volume_change_usd, security_score, one_month_price_percent_change_usd } = req.body;
+    const url = `https://deep-index.moralis.io/api/v2.2/discovery/tokens/risky-bets?chain=${chain}&max_market_cap=${max_market_cap}&one_week_holders_change=${one_week_holders_change}&one_week_net_volume_change_usd=${one_week_net_volume_change_usd}&one_month_volume_change_usd=${one_month_volume_change_usd}&security_score=${security_score}&one_month_price_percent_change_usd=${one_month_price_percent_change_usd}`;
+  
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'accept': 'application/json',
+          'X-API-Key': process.env.MORALIS_API_KEY,
+        },
+      });
+      res.json(response.data);
+    } catch (error) {
+      console.error('Error fetching risky bets tokens:', error);
+      res.status(500).json({ error: 'Failed to fetch risky bets tokens' });
+    }
+  });
+
+  // Route for solid performers
+app.post('/api/get-solid-performers', async (req, res) => {
+    const { chain, one_month_net_volume_change_usd, one_week_net_volume_change_usd, one_day_net_volume_change_usd, one_month_volume_change_usd, security_score, one_month_price_percent_change_usd } = req.body;
+    const url = `https://deep-index.moralis.io/api/v2.2/discovery/tokens/solid-performers?chain=${chain}&one_month_net_volume_change_usd=${one_month_net_volume_change_usd}&one_week_net_volume_change_usd=${one_week_net_volume_change_usd}&one_day_net_volume_change_usd=${one_day_net_volume_change_usd}&one_month_volume_change_usd=${one_month_volume_change_usd}&security_score=${security_score}&one_month_price_percent_change_usd=${one_month_price_percent_change_usd}`;
+  
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'accept': 'application/json',
+          'X-API-Key': process.env.MORALIS_API_KEY,
+        },
+      });
+      res.json(response.data);
+    } catch (error) {
+      console.error('Error fetching solid performers:', error);
+      res.status(500).json({ error: 'Failed to fetch solid performers' });
+    }
+  });
+
+  // Route for blue-chip tokens
+app.post('/api/get-blue-chip-tokens', async (req, res) => {
+    const { chain, min_market_cap, one_week_price_percent_change_usd, one_day_price_percent_change_usd, one_month_volume_change_usd, security_score, one_month_price_percent_change_usd } = req.body;
+    const url = `https://deep-index.moralis.io/api/v2.2/discovery/tokens/blue-chip?chain=${chain}&min_market_cap=${min_market_cap}&one_week_price_percent_change_usd=${one_week_price_percent_change_usd}&one_day_price_percent_change_usd=${one_day_price_percent_change_usd}&one_month_volume_change_usd=${one_month_volume_change_usd}&security_score=${security_score}&one_month_price_percent_change_usd=${one_month_price_percent_change_usd}`;
+  
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'accept': 'application/json',
+          'X-API-Key': process.env.MORALIS_API_KEY,
+        },
+      });
+      res.json(response.data);
+    } catch (error) {
+      console.error('Error fetching blue-chip tokens:', error);
+      res.status(500).json({ error: 'Failed to fetch blue-chip tokens' });
+    }
+  });
+
+  app.post('/api/get-trending-tokens', async (req, res) => {
+    const { chain, min_market_cap, security_score } = req.body;
+    const url = `https://deep-index.moralis.io/api/v2.2/discovery/tokens/trending?chain=${chain}&min_market_cap=${min_market_cap}&security_score=${security_score}`;
+  
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'accept': 'application/json',
+          'X-API-Key': process.env.MORALIS_API_KEY,
+        },
+      });
+      res.json(response.data);
+    } catch (error) {
+      console.error('Error fetching trending tokens:', error);
+      res.status(500).json({ error: 'Failed to fetch trending tokens' });
+    }
+  });
+  
   
   
   
