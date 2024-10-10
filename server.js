@@ -66,41 +66,55 @@ app.post('/api/get-defi-positions', async (req, res) => {
   
     try {
       // Fetch ENS domain
-      const ensResponse = await axios.get(`https://deep-index.moralis.io/api/v2.2/resolve/${walletAddress}/reverse`, {
-        headers: {
-          'accept': 'application/json',
-          'X-API-Key': process.env.MORALIS_API_KEY, // Use API key from environment variables
-        },
-      });
-  
       let ensDomain = null;
-      if (ensResponse.data && ensResponse.data.name) {
-        ensDomain = ensResponse.data.name;
+      try {
+        const ensResponse = await axios.get(`https://deep-index.moralis.io/api/v2.2/resolve/${walletAddress}/reverse`, {
+          headers: {
+            'accept': 'application/json',
+            'X-API-Key': process.env.MORALIS_API_KEY, // Use API key from environment variables
+          },
+        });
+  
+        // Check if ENS domain exists in response
+        if (ensResponse.data && ensResponse.data.name) {
+          ensDomain = ensResponse.data.name;
+        } else {
+          console.log('ENS domain not found or response is null for wallet:', walletAddress);
+        }
+      } catch (ensError) {
+        console.error('Error fetching ENS domain:', ensError.response ? ensError.response.data : ensError.message);
       }
   
       // Fetch Unstoppable Domain
-      const udResponse = await axios.get(`https://deep-index.moralis.io/api/v2.2/resolve/${walletAddress}/domain`, {
-        headers: {
-          'accept': 'application/json',
-          'X-API-Key': process.env.MORALIS_API_KEY, // Use API key from environment variables
-        },
-      });
-  
       let unstoppableDomain = null;
-      if (udResponse.data && udResponse.data.name) {
-        unstoppableDomain = udResponse.data.name;
+      try {
+        const udResponse = await axios.get(`https://deep-index.moralis.io/api/v2.2/resolve/${walletAddress}/domain`, {
+          headers: {
+            'accept': 'application/json',
+            'X-API-Key': process.env.MORALIS_API_KEY, // Use API key from environment variables
+          },
+        });
+  
+        // Check if Unstoppable Domain exists in response
+        if (udResponse.data && udResponse.data.name) {
+          unstoppableDomain = udResponse.data.name;
+        } else {
+          console.log('Unstoppable domain not found or response is null for wallet:', walletAddress);
+        }
+      } catch (udError) {
+        console.error('Error fetching Unstoppable Domain:', udError.response ? udError.response.data : udError.message);
       }
   
-      // Send both domains back to the client, even if they are null
+      // Send both domains back to the client, even if one is null
       res.status(200).json({ ensDomain, unstoppableDomain });
   
     } catch (error) {
-      console.error(`Error fetching domain data for wallet ${walletAddress}:`, error);
-  
-      // Always return 200 OK with null values if an error occurs
+      console.error(`Error processing domain data for wallet ${walletAddress}:`, error);
       res.status(200).json({ ensDomain: null, unstoppableDomain: null });
     }
   });
+  
+  
 
   app.post('/api/get-profitability-summary', async (req, res) => {
     const { walletAddress, chain } = req.body;
