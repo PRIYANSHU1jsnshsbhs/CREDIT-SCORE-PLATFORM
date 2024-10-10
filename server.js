@@ -63,7 +63,7 @@ app.post('/api/get-defi-positions', async (req, res) => {
 
   app.post('/api/get-domain-data', async (req, res) => {
     const { walletAddress } = req.body;
-    
+  
     try {
       // Fetch ENS domain
       const ensResponse = await axios.get(`https://deep-index.moralis.io/api/v2.2/resolve/${walletAddress}/reverse`, {
@@ -91,12 +91,14 @@ app.post('/api/get-defi-positions', async (req, res) => {
         unstoppableDomain = udResponse.data.name;
       }
   
-      // Send both domains back to the client
-      res.json({ ensDomain, unstoppableDomain });
+      // Send both domains back to the client, even if they are null
+      res.status(200).json({ ensDomain, unstoppableDomain });
   
     } catch (error) {
       console.error(`Error fetching domain data for wallet ${walletAddress}:`, error);
-      res.status(500).json({ error: 'Failed to fetch domain data' });
+  
+      // Always return 200 OK with null values if an error occurs
+      res.status(200).json({ ensDomain: null, unstoppableDomain: null });
     }
   });
 
