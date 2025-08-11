@@ -4,32 +4,40 @@
 
 Analyzes wallet activity across 6 blockchain networks, calculates OnChain credit scores using a 7-component algorithm, and mints NFT certificates with custom tier badges.
 
+## 📊 System Architecture
+
 ![System Flowchart](./flowchart/onchain-score-flowchart.png)
+*Complete workflow from wallet input to NFT certificate delivery*
 
 ## 📸 Platform Screenshots
 
 ### Main Interface
 ![Main Interface](./screenshots/main-interface.png)
+*Clean wallet analysis interface with multi-chain selection*
 
 ### Analysis Progress
 ![Analysis Progress](./screenshots/analysis-progress.png)
+*Real-time analysis with progress tracking across blockchain networks*
 
 ### Score Breakdown
 ![Score Breakdown](./screenshots/score-breakdown.png)
+*Detailed 7-component scoring visualization with tier assignment*
 
 ### Tier Assignment
 ![Tier Assignment](./screenshots/tier-assignment.png)
+*Dynamic tier assignment with custom badge preview*
 
 ### NFT Certificate
 ![NFT Certificate](./screenshots/nft-certificate.png)
+*Final minted NFT certificate with IPFS integration and sharing options*
 
 ## 🚀 Quick Setup
 
 ### 1. Install Dependencies
 ```bash
 # Clone repository
-git clone https://github.com/bharathbabu3017/onchain-score-backend.git
-cd onchain-score-backend
+git clone https://github.com/PRIYANSHU1jsnshsbhs/CREDIT-SCORE-PLATFORM.git
+cd CREDIT-SCORE-PLATFORM
 
 # Install backend dependencies
 npm install
@@ -116,4 +124,3 @@ curl -X POST http://localhost:9000/api/mint-certificate \
 ## 📝 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-# CREDIT-SCORE-PLATFORM
