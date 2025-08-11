@@ -1,0 +1,14 @@
+node_modules/
+.git/
+.env
+contracts/node_modules/
+react-frontend/node_modules/
+*.log
+.DS_Store
+screenshots/
+flowchart/
+images/
+cache/
+broadcast/
+out/
+lib/
