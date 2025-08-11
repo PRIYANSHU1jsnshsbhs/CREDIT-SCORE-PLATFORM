@@ -1,0 +1,124 @@
+nohup: ignoring input
+Port 3000 is in use, trying another one...
+Port 3001 is in use, trying another one...
+Port 3002 is in use, trying another one...
+
+  VITE v5.4.19  ready in 638 ms
+
+  ➜  Local:   http://localhost:3003/
+  ➜  Network: use --host to expose
+6:31:57 PM [vite] http proxy error: /api/calculate-onchain-score
+Error: connect ECONNREFUSED 127.0.0.1:9000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1636:16)
+6:31:59 PM [vite] http proxy error: /api/calculate-onchain-score
+Error: connect ECONNREFUSED 127.0.0.1:9000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1636:16)
+6:32:02 PM [vite] http proxy error: /api/calculate-onchain-score
+Error: connect ECONNREFUSED 127.0.0.1:9000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1636:16)
+6:32:03 PM [vite] http proxy error: /api/calculate-onchain-score
+Error: connect ECONNREFUSED 127.0.0.1:9000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1636:16)
+6:43:21 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+6:50:32 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+6:50:48 PM [vite] hmr update /src/index.css
+6:51:02 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+6:51:31 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+6:51:53 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+6:52:08 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+7:43:46 PM [vite] hmr update /src/index.css
+7:43:47 PM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+3:43:41 AM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+3:43:49 AM [vite] hmr update /src/index.css
+3:44:27 AM [vite] page reload tailwind.config.js
+3:45:02 AM [vite] vite.config.ts changed, restarting server...
+3:45:02 AM [vite] page reload src/components/WalletAnalyzer_Clean.tsx
+3:45:02 AM [vite] hmr update /src/components/Header.tsx, /src/index.css
+3:45:02 AM [vite] hmr update /src/components/BackgroundEffects.tsx, /src/index.css
+3:45:02 AM [vite] page reload src/components/WalletAnalyzer_backup.tsx
+3:45:02 AM [vite] hmr update /src/components/WalletAnalyzer.tsx, /src/index.css
+3:45:02 AM [vite] hmr update /src/App.tsx, /src/index.css
+3:45:02 AM [vite] page reload src/main.tsx
+3:45:02 AM [vite] server restarted.
+3:45:11 AM [vite] hmr update /src/index.css
+3:47:00 AM [vite] page reload tailwind.config.js
+3:47:00 AM [vite] vite.config.ts changed, restarting server...
+3:47:00 AM [vite] server restarted.
+4:00:46 AM [vite] page reload src/main.tsx
+4:00:47 AM [vite] Pre-transform error: /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/src/main.tsx: Unexpected token, expected "from" (2:15)
+
+  1 | import React from 'react'
+> 2 | import ReactDOM} from 'react-dom/client'
+    |                ^
+  3 | import App from './App'
+  4 | import './index.css'
+  5 |
+4:00:47 AM [vite] Internal server error: /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/src/main.tsx: Unexpected token, expected "from" (2:15)
+
+  1 | import React from 'react'
+> 2 | import ReactDOM} from 'react-dom/client'
+    |                ^
+  3 | import App from './App'
+  4 | import './index.css'
+  5 |
+  Plugin: vite:react-babel
+  File: /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/src/main.tsx:2:15
+  1  |  import React from 'react'
+  2  |  import ReactDOM} from 'react-dom/client'
+     |                 ^
+  3  |  import App from './App'
+  4  |  import './index.css'
+      at constructor (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:367:19)
+      at TypeScriptParserMixin.raise (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:6627:19)
+      at TypeScriptParserMixin.unexpected (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:6647:16)
+      at TypeScriptParserMixin.expectContextual (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:6906:12)
+      at TypeScriptParserMixin.parseImportSpecifiersAndAfter (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:14243:10)
+      at TypeScriptParserMixin.parseImport (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:14235:17)
+      at TypeScriptParserMixin.parseImport (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:9436:26)
+      at TypeScriptParserMixin.parseStatementContent (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:12876:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:9527:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:12625:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:12615:25)
+      at TypeScriptParserMixin.parse (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:14492:10)
+      at TypeScriptParserMixin.parse (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:10144:18)
+      at parse (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/parser/lib/index.js:14526:38)
+      at parser (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+      at parser.next (<anonymous>)
+      at normalizeFile (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+      at normalizeFile.next (<anonymous>)
+      at run (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/core/lib/transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:261:32)
+      at /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:273:13
+      at async.call.result.err.err (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:223:11)
+      at /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:189:28
+      at /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+      at /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:113:33
+      at step (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:287:14)
+      at /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:273:13
+      at async.call.result.err.err (/home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/node_modules/gensync/index.js:223:11)
+4:00:48 AM [vite] Pre-transform error: /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/src/main.tsx: Unexpected token, expected "from" (2:15)
+
+  1 | import React from 'react'
+> 2 | import ReactDOM} from 'react-dom/client'
+    |                ^
+  3 | import App from './App'
+  4 | import './index.css'
+  5 |
+4:00:48 AM [vite] Pre-transform error: /home/priyanshu/moralis-api-test/onchain-score-backend/react-frontend/src/main.tsx: Unexpected token, expected "from" (2:15)
+
+  1 | import React from 'react'
+> 2 | import ReactDOM} from 'react-dom/client'
+    |                ^
+  3 | import App from './App'
+  4 | import './index.css'
+  5 |
+4:00:48 AM [vite] page reload src/main.tsx
+4:00:53 AM [vite] page reload src/main.tsx
+4:02:02 AM [vite] page reload src/main.tsx

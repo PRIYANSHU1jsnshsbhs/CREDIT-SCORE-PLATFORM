@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnChain Score NFT Certificate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .card-shadow {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .tier-s-plus {
+      background: linear-gradient(135deg, #ffd700, #ffed4a);
+    }
+
+    .tier-s {
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+    }
+
+    .tier-a-plus {
+      background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    }
+
+    .tier-a {
+      background: linear-gradient(135deg, #2980b9, #3498db);
+    }
+
+    .tier-b-plus {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+    }
+
+    .tier-b {
+      background: linear-gradient(135deg, #f39c12, #f1c40f);
+    }
+
+    .tier-c-plus {
+      background: linear-gradient(135deg, #e67e22, #e74c3c);
+    }
+
+    .tier-c {
+      background: linear-gradient(135deg, #95a5a6, #bdc3c7);
+    }
+
+    .tier-d {
+      background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+    }
+
+    .tier-f {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+  <nav class="gradient-bg text-white p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">🏆 OnChain Score Certificate</h1>
+      <div class="text-sm">
+        <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+          Ethereum Sepolia
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-4 py-8">
+    <!-- Score Analysis Section -->
+    <div class="bg-white rounded-xl p-6 card-shadow mb-8">
+      <h2 class="text-2xl font-bold mb-6 text-center">🎯 Analyze Your Wallet Score</h2>
+      <div class="max-w-md mx-auto">
+        <div class="mb-4">
+          <label for="walletAddress" class="block text-sm font-medium text-gray-700 mb-2">
+            Wallet Address
+          </label>
+          <input type="text" id="walletAddress" placeholder="0x..."
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <button onclick="analyzeScore()" id="analyzeBtn"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+          🔍 Analyze Score
+        </button>
+      </div>
+    </div>
+
+    <!-- Score Results Section -->
+    <div id="scoreResults" class="hidden">
+      <!-- Results will be populated here -->
+    </div>
+
+    <!-- NFT Certificate Section -->
+    <div id="nftSection" class="hidden">
+      <div class="bg-white rounded-xl p-6 card-shadow">
+        <h2 class="text-2xl font-bold mb-6 text-center">🎨 Mint Your NFT Certificate</h2>
+        <div id="certificatePreview" class="max-w-md mx-auto mb-6">
+          <!-- Certificate preview will be populated here -->
+        </div>
+        <div class="text-center">
+          <button onclick="mintCertificate()" id="mintBtn"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+            🎪 Mint NFT Certificate
+          </button>
+          <p class="text-sm text-gray-600 mt-2">
+            Free minting on Ethereum Sepolia testnet
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Minting Result -->
+    <div id="mintingResult" class="hidden">
+      <!-- Minting result will be populated here -->
+    </div>
+
+    <!-- Info Section -->
+    <div class="bg-white rounded-xl p-6 card-shadow mt-8">
+      <h3 class="text-xl font-bold mb-4">📋 How It Works</h3>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-bold text-blue-600 mb-2">🎯 Score Analysis</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>• Portfolio Value (25 pts)</li>
+            <li>• Multi-chain Activity (20 pts)</li>
+            <li>• DeFi Engagement (20 pts)</li>
+            <li>• Token Diversification (15 pts)</li>
+            <li>• Security & Identity (15 pts)</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-green-600 mb-2">🏆 NFT Tiers</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>• S+: 95+ points (Crypto Whale) 🐋</li>
+            <li>• S: 90+ points (DeFi Expert) 🚀</li>
+            <li>• A+: 85+ points (Advanced User) 💎</li>
+            <li>• A: 80+ points (Experienced) ⭐</li>
+            <li>• B+: 75+ points (Active User) 🔥</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentScore = 0;
+    let currentWallet = '';
+    let currentTier = '';
+
+    async function analyzeScore() {
+      const walletAddress = document.getElementById('walletAddress').value.trim();
+      const analyzeBtn = document.getElementById('analyzeBtn');
+
+      if (!walletAddress || !walletAddress.startsWith('0x')) {
+        alert('Please enter a valid wallet address');
+        return;
+      }
+
+      analyzeBtn.textContent = '🔄 Analyzing...';
+      analyzeBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/calculate-onchain-score', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            walletAddress: walletAddress,
+            chains: ['eth', 'polygon', 'bsc', 'avalanche']
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          currentScore = data.score;
+          currentWallet = data.walletAddress;
+          currentTier = data.tier;
+          displayScoreResults(data);
+        } else {
+          alert('Error: ' + (data.error || 'Failed to analyze score'));
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Network error. Please try again.');
+      } finally {
+        analyzeBtn.textContent = '🔍 Analyze Score';
+        analyzeBtn.disabled = false;
+      }
+    }
+
+    function displayScoreResults(data) {
+      const resultsDiv = document.getElementById('scoreResults');
+      const tierClass = getTierClass(data.score);
+
+      resultsDiv.innerHTML = `
+                <div class="bg-white rounded-xl p-6 card-shadow mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">📊 Your OnChain Score</h3>
+                    <div class="max-w-2xl mx-auto">
+                        <div class="text-center mb-6">
+                            <div class="${tierClass} text-white rounded-xl p-6 mb-4">
+                                <h2 class="text-4xl font-bold">${data.score}/100</h2>
+                                <p class="text-xl">${data.tier}</p>
+                            </div>
+                            <p class="text-gray-600">Wallet: ${formatAddress(data.walletAddress)}</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-blue-600">${data.breakdown.portfolioScore}</div>
+                                <div class="text-sm text-gray-600">Portfolio</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-green-600">${data.breakdown.activityScore}</div>
+                                <div class="text-sm text-gray-600">Activity</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-purple-600">${data.breakdown.defiScore}</div>
+                                <div class="text-sm text-gray-600">DeFi</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-orange-600">${data.breakdown.diversificationScore}</div>
+                                <div class="text-sm text-gray-600">Diversity</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-red-600">${data.breakdown.securityScore}</div>
+                                <div class="text-sm text-gray-600">Security</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-indigo-600">${data.breakdown.identityScore}</div>
+                                <div class="text-sm text-gray-600">Identity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+      resultsDiv.classList.remove('hidden');
+
+      // Show NFT section
+      document.getElementById('nftSection').classList.remove('hidden');
+      setupCertificatePreview(data);
+    }
+
+    function setupCertificatePreview(data) {
+      const previewDiv = document.getElementById('certificatePreview');
+      const tierClass = getTierClass(data.score);
+      const tierName = data.tier.split(' ')[0]; // Get just the tier letter
+
+      previewDiv.innerHTML = `
+                <div class="${tierClass} text-white rounded-xl p-6 text-center">
+                    <div class="text-6xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-bold mb-2">OnChain Score Certificate</h3>
+                    <div class="text-4xl font-bold mb-2">${tierName}</div>
+                    <div class="text-xl mb-4">Score: ${data.score}/100</div>
+                    <div class="text-sm opacity-80">
+                        ${formatAddress(data.walletAddress)}
+                    </div>
+                    <div class="text-xs opacity-70 mt-2">
+                        Ethereum Sepolia • ERC-721
+                    </div>
+                </div>
+            `;
+    }
+
+    async function mintCertificate() {
+      const mintBtn = document.getElementById('mintBtn');
+
+      if (!currentWallet || currentScore === 0) {
+        alert('Please analyze your score first');
+        return;
+      }
+
+      mintBtn.textContent = '🎨 Minting...';
+      mintBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/mint-certificate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            walletAddress: currentWallet,
+            score: currentScore
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          displayMintingResult(data);
+        } else {
+          alert('Minting failed: ' + (data.error || 'Unknown error'));
+        }
+
+      } catch (error) {
+        console.error('Minting error:', error);
+        alert('Network error during minting. Please try again.');
+      } finally {
+        mintBtn.textContent = '🎪 Mint NFT Certificate';
+        mintBtn.disabled = false;
+      }
+    }
+
+    function displayMintingResult(data) {
+      const resultDiv = document.getElementById('mintingResult');
+
+      resultDiv.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded-xl p-6 card-shadow">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">🎉</div>
+                        <h3 class="text-2xl font-bold text-green-800 mb-4">Certificate Minted Successfully!</h3>
+                        <div class="bg-white rounded-lg p-4 mb-4">
+                            <p><strong>Token ID:</strong> #${data.tokenId}</p>
+                            <p><strong>Tier:</strong> ${data.tier}</p>
+                            <p><strong>Score:</strong> ${data.score}/100</p>
+                            <p><strong>Recipient:</strong> ${formatAddress(data.recipient)}</p>
+                        </div>
+                        <div class="space-y-2">
+                            <a href="${data.etherscanUrl}" target="_blank" 
+                               class="block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                                🔍 View on Etherscan
+                            </a>
+                            <a href="${data.opensea}" target="_blank" 
+                               class="block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-200">
+                                🖼️ View on OpenSea
+                            </a>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">
+                            ${data.message}
+                        </p>
+                    </div>
+                </div>
+            `;
+
+      resultDiv.classList.remove('hidden');
+
+      // Scroll to result
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function getTierClass(score) {
+      if (score >= 95) return 'tier-s-plus';
+      if (score >= 90) return 'tier-s';
+      if (score >= 85) return 'tier-a-plus';
+      if (score >= 80) return 'tier-a';
+      if (score >= 75) return 'tier-b-plus';
+      if (score >= 70) return 'tier-b';
+      if (score >= 65) return 'tier-c-plus';
+      if (score >= 60) return 'tier-c';
+      if (score >= 55) return 'tier-d';
+      return 'tier-f';
+    }
+
+    function formatAddress(address) {
+      return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+    }
+  </script>
+</body>
+
+</html>

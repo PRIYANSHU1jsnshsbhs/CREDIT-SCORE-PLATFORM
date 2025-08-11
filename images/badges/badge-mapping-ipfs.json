@@ -1,0 +1,112 @@
+{
+  "S+": {
+    "filename": "S+.png",
+    "path": "images/badges/S+.png",
+    "min_score": 90,
+    "max_score": 100,
+    "description": "S+ Crypto Whale",
+    "tier": "S+",
+    "ipfs_hash": "bafkreiaboko6j4gw36dkfkeisddpjgowr5kmhdzcwhmauvhqt2bios4fx4",
+    "ipfs_url": "ipfs://bafkreiaboko6j4gw36dkfkeisddpjgowr5kmhdzcwhmauvhqt2bios4fx4",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreiaboko6j4gw36dkfkeisddpjgowr5kmhdzcwhmauvhqt2bios4fx4"
+  },
+  "S": {
+    "filename": "S.png",
+    "path": "images/badges/S.png",
+    "min_score": 80,
+    "max_score": 89,
+    "description": "S DeFi Expert",
+    "tier": "S",
+    "ipfs_hash": "bafybeidapg3nv3gbpw3wommmvchlueqd7d3i6pwcinjlba3r3iokgureeq",
+    "ipfs_url": "ipfs://bafybeidapg3nv3gbpw3wommmvchlueqd7d3i6pwcinjlba3r3iokgureeq",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafybeidapg3nv3gbpw3wommmvchlueqd7d3i6pwcinjlba3r3iokgureeq"
+  },
+  "A+": {
+    "filename": "A+.png",
+    "path": "images/badges/A+.png",
+    "min_score": 70,
+    "max_score": 79,
+    "description": "A+ Advanced User",
+    "tier": "A+",
+    "ipfs_hash": "bafkreicqf6h6b34n53lcupvhxujcljlf3rg7aacp7orpdg3ypgt4odzkd4",
+    "ipfs_url": "ipfs://bafkreicqf6h6b34n53lcupvhxujcljlf3rg7aacp7orpdg3ypgt4odzkd4",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreicqf6h6b34n53lcupvhxujcljlf3rg7aacp7orpdg3ypgt4odzkd4"
+  },
+  "A": {
+    "filename": "A.png",
+    "path": "images/badges/A.png",
+    "min_score": 60,
+    "max_score": 69,
+    "description": "A Experienced User",
+    "tier": "A",
+    "ipfs_hash": "bafkreietpaskuv337n4hghrfrdxibogjajludkvwbdu5lnqvwyaq7vafs4",
+    "ipfs_url": "ipfs://bafkreietpaskuv337n4hghrfrdxibogjajludkvwbdu5lnqvwyaq7vafs4",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreietpaskuv337n4hghrfrdxibogjajludkvwbdu5lnqvwyaq7vafs4"
+  },
+  "B+": {
+    "filename": "B+.png",
+    "path": "images/badges/B+.png",
+    "min_score": 50,
+    "max_score": 59,
+    "description": "B+ Active User",
+    "tier": "B+",
+    "ipfs_hash": "bafkreidhxxcpb4zxfkqxablmkr5a7qpkdpnwsqsi37d2iw3luoikus2nza",
+    "ipfs_url": "ipfs://bafkreidhxxcpb4zxfkqxablmkr5a7qpkdpnwsqsi37d2iw3luoikus2nza",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreidhxxcpb4zxfkqxablmkr5a7qpkdpnwsqsi37d2iw3luoikus2nza"
+  },
+  "B": {
+    "filename": "B.png",
+    "path": "images/badges/B.png",
+    "min_score": 40,
+    "max_score": 49,
+    "description": "B Regular User",
+    "tier": "B",
+    "ipfs_hash": "bafkreiepapbq4pivvdieonh6bvqfks37utldfufpooabrcytpbtz7gm444",
+    "ipfs_url": "ipfs://bafkreiepapbq4pivvdieonh6bvqfks37utldfufpooabrcytpbtz7gm444",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreiepapbq4pivvdieonh6bvqfks37utldfufpooabrcytpbtz7gm444"
+  },
+  "C+": {
+    "filename": "C+.png",
+    "path": "images/badges/C+.png",
+    "min_score": 30,
+    "max_score": 39,
+    "description": "C+ Casual User",
+    "tier": "C+",
+    "ipfs_hash": "bafkreigp4cmy3a5kacbpl7x75hra74lq2cte4ej54sre6h45bg6ng4vjvm",
+    "ipfs_url": "ipfs://bafkreigp4cmy3a5kacbpl7x75hra74lq2cte4ej54sre6h45bg6ng4vjvm",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreigp4cmy3a5kacbpl7x75hra74lq2cte4ej54sre6h45bg6ng4vjvm"
+  },
+  "C": {
+    "filename": "C.png",
+    "path": "images/badges/C.png",
+    "min_score": 20,
+    "max_score": 29,
+    "description": "C Beginner",
+    "tier": "C",
+    "ipfs_hash": "bafkreiefsp2a3ppmuy4z34zl3zhp2o4c3u7csb5nhszamkunke4lcu7gf4",
+    "ipfs_url": "ipfs://bafkreiefsp2a3ppmuy4z34zl3zhp2o4c3u7csb5nhszamkunke4lcu7gf4",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreiefsp2a3ppmuy4z34zl3zhp2o4c3u7csb5nhszamkunke4lcu7gf4"
+  },
+  "D": {
+    "filename": "D.png",
+    "path": "images/badges/D.png",
+    "min_score": 10,
+    "max_score": 19,
+    "description": "D New User",
+    "tier": "D",
+    "ipfs_hash": "bafkreiazywpfh4pkdrilvznljdf23b6ol6biv7w7l7eu3k2n3zeaorrwqq",
+    "ipfs_url": "ipfs://bafkreiazywpfh4pkdrilvznljdf23b6ol6biv7w7l7eu3k2n3zeaorrwqq",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafkreiazywpfh4pkdrilvznljdf23b6ol6biv7w7l7eu3k2n3zeaorrwqq"
+  },
+  "F": {
+    "filename": "F.png",
+    "path": "images/badges/F.png",
+    "min_score": 0,
+    "max_score": 9,
+    "description": "F Inactive",
+    "tier": "F",
+    "ipfs_hash": "bafybeiei5swgtp4ja6baqmuv7e7n4mnrj4bfemoyq6akqhweiofiknzpje",
+    "ipfs_url": "ipfs://bafybeiei5swgtp4ja6baqmuv7e7n4mnrj4bfemoyq6akqhweiofiknzpje",
+    "gateway_url": "https://gateway.pinata.cloud/ipfs/bafybeiei5swgtp4ja6baqmuv7e7n4mnrj4bfemoyq6akqhweiofiknzpje"
+  }
+}

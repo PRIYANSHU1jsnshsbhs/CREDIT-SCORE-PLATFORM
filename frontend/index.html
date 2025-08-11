@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnChain Score - Web3 Reputation System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+
+<body>
+  <div class="app">
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i data-lucide="shield-check" class="logo-icon"></i>
+          <span class="logo-text">OnChain Score</span>
+        </div>
+        <div class="nav-actions">
+          <button id="connectWallet" class="btn btn-primary">
+            <i data-lucide="wallet" class="btn-icon"></i>
+            Connect Wallet
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            Discover Your <span class="gradient-text">OnChain Reputation</span>
+          </h1>
+          <p class="hero-subtitle">
+            Analyze your Web3 activity across multiple blockchains and get a comprehensive reputation score based on
+            your DeFi engagement, portfolio diversification, and transaction history.
+          </p>
+
+          <!-- Wallet Input -->
+          <div class="search-container">
+            <div class="input-group">
+              <i data-lucide="search" class="input-icon"></i>
+              <input type="text" id="walletInput" class="wallet-input"
+                placeholder="Enter wallet address or ENS domain (e.g., vitalik.eth)">
+              <button id="analyzeBtn" class="btn btn-primary btn-large">
+                <i data-lucide="zap" class="btn-icon"></i>
+                Analyze Wallet
+              </button>
+            </div>
+
+            <!-- Chain Selection -->
+            <div class="chain-selector">
+              <span class="chain-label">Select Chains:</span>
+              <div class="chain-options">
+                <label class="chain-option">
+                  <input type="checkbox" value="eth" checked>
+                  <span class="checkmark"></span>
+                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH" class="chain-icon">
+                  ETH
+                </label>
+                <label class="chain-option">
+                  <input type="checkbox" value="polygon" checked>
+                  <span class="checkmark"></span>
+                  <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon" class="chain-icon">
+                  Polygon
+                </label>
+                <label class="chain-option">
+                  <input type="checkbox" value="base" checked>
+                  <span class="checkmark"></span>
+                  <img src="https://avatars.githubusercontent.com/u/108554348?s=280&v=4" alt="Base" class="chain-icon">
+                  Base
+                </label>
+                <label class="chain-option">
+                  <input type="checkbox" value="bsc">
+                  <span class="checkmark"></span>
+                  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BSC" class="chain-icon">
+                  BSC
+                </label>
+                <label class="chain-option">
+                  <input type="checkbox" value="avalanche">
+                  <span class="checkmark"></span>
+                  <img src="https://cryptologos.cc/logos/avalanche-avax-logo.png" alt="Avalanche" class="chain-icon">
+                  AVAX
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-container hidden">
+      <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <h3 class="loading-title">Analyzing Wallet...</h3>
+        <p class="loading-text">Fetching data from multiple blockchains</p>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <section id="resultsSection" class="results-section hidden">
+      <div class="container">
+        <!-- Score Card -->
+        <div class="score-card">
+          <div class="score-header">
+            <div class="score-info">
+              <h2 class="wallet-address" id="walletAddress">0x...</h2>
+              <div class="score-tier" id="scoreTier">Loading...</div>
+            </div>
+            <div class="score-circle">
+              <svg class="score-ring" width="120" height="120">
+                <circle class="score-ring-bg" cx="60" cy="60" r="50"></circle>
+                <circle class="score-ring-fill" cx="60" cy="60" r="50" id="scoreRing"></circle>
+              </svg>
+              <div class="score-text">
+                <span class="score-value" id="scoreValue">0</span>
+                <span class="score-max">/100</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score Breakdown -->
+          <div class="score-breakdown">
+            <h3 class="breakdown-title">Score Breakdown</h3>
+            <div class="breakdown-grid" id="breakdownGrid">
+              <!-- Dynamic content -->
+            </div>
+          </div>
+
+          <!-- Certificate Actions -->
+          <div class="certificate-actions">
+            <button id="generateCertificate" class="certificate-btn">
+              <i data-lucide="award" class="btn-icon"></i>
+              Generate NFT Certificate
+            </button>
+            <div id="certificateResult" class="certificate-result hidden">
+              <!-- Certificate link will appear here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid">
+          <!-- Dynamic content -->
+        </div>
+
+        <!-- Details Section -->
+        <div class="details-section">
+          <div class="details-tabs">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="defi">DeFi Positions</button>
+            <button class="tab-btn" data-tab="tokens">Token Portfolio</button>
+            <button class="tab-btn" data-tab="activity">Activity</button>
+          </div>
+
+          <div class="tab-content">
+            <div id="overview-tab" class="tab-panel active">
+              <div class="overview-grid" id="overviewGrid">
+                <!-- Dynamic content -->
+              </div>
+            </div>
+
+            <div id="defi-tab" class="tab-panel">
+              <div class="defi-positions" id="defiPositions">
+                <!-- Dynamic content -->
+              </div>
+            </div>
+
+            <div id="tokens-tab" class="tab-panel">
+              <div class="token-portfolio" id="tokenPortfolio">
+                <!-- Dynamic content -->
+              </div>
+            </div>
+
+            <div id="activity-tab" class="tab-panel">
+              <div class="activity-timeline" id="activityTimeline">
+                <!-- Dynamic content -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-info">
+            <div class="footer-logo">
+              <i data-lucide="shield-check" class="logo-icon"></i>
+              <span class="logo-text">OnChain Score</span>
+            </div>
+            <p class="footer-text">Advanced Web3 reputation system powered by Moralis API</p>
+          </div>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Documentation</a>
+            <a href="#" class="footer-link">API</a>
+            <a href="#" class="footer-link">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

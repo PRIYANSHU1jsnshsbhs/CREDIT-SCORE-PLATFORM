@@ -1,0 +1,10 @@
+{
+  "transactions": [
+    {
+      "rpc": "https://sepolia.drpc.org"
+    },
+    {
+      "rpc": "https://sepolia.drpc.org"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+🪙 POLYGON AMOY FAUCET STRATEGY
+=====================================
+
+Your Wallet: 0xB423D1a0436ECA8EC64A8C677361dDEA3d1bA855
+Current Balance: 0.1 MATIC  
+Target: 2.5 MATIC
+
+FAUCET SCHEDULE:
+===============
+
+1. POLYGON OFFICIAL (Primary - up to 2 MATIC)
+   📍 https://faucet.polygon.technology/
+   ✅ Select "Polygon Amoy"
+   ✅ May require Twitter verification
+   ✅ Usually gives 1-2 MATIC per request
+
+2. ALCHEMY FAUCET (0.5 MATIC)
+   📍 https://www.alchemy.com/faucets/polygon-amoy
+   ✅ Requires account signup (free)
+   ✅ Reliable source
+
+3. CHAINLINK FAUCET (0.2-0.5 MATIC)  
+   📍 https://faucets.chain.link/polygon-amoy
+   ✅ Good backup option
+
+4. QUICKNODE FAUCET
+   📍 https://faucet.quicknode.com/polygon/amoy
+   ✅ Additional source if needed
+
+PRO TIPS:
+---------
+• Try different browsers if you hit daily limits
+• Some faucets reset every 24 hours
+• Use social media verification when available
+• Clear cookies between requests if needed
+
+ESTIMATED TOTAL: 2-3 MATIC (enough for deployment!)

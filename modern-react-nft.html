@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnChain Score - NFT Certificate System</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #000;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Animations */
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.8s ease-out;
+    }
+
+    .animate-pulse-glow {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+      }
+    }
+
+    /* Tier Colors */
+    .tier-s-plus {
+      background: linear-gradient(135deg, #ffd700, #ffed4a);
+      color: #1a1a1a;
+    }
+
+    .tier-s {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+    }
+
+    .tier-a-plus {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+    }
+
+    .tier-a {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+    }
+
+    .tier-b-plus {
+      background: linear-gradient(135deg, #059669, #10b981);
+    }
+
+    .tier-b {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+    }
+
+    .tier-c-plus {
+      background: linear-gradient(135deg, #ea580c, #f97316);
+    }
+
+    .tier-c {
+      background: linear-gradient(135deg, #6b7280, #9ca3af);
+    }
+
+    .tier-d {
+      background: linear-gradient(135deg, #4b5563, #6b7280);
+    }
+
+    .tier-f {
+      background: linear-gradient(135deg, #1f2937, #374151);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2563eb;
+    }
+
+    /* Responsive grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Background Effects Component
+    const BackgroundEffects = () => (
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute -bottom-20 left-40 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
+
+        {/* Animated Grid */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="h-full w-full" style={{
+            backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                                          linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }}></div>
+        </div>
+      </div>
+    );
+
+    // Header Component
+    const Header = () => (
+      <header className="relative z-20 p-6">
+        <div className="max-w-7xl mx-auto">
+          <nav className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center animate-pulse-glow">
+                  <span className="text-2xl">⚡</span>
+                </div>
+              </div>
+              <div>
+                <h1 className="text-3xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  OnChain Score
+                </h1>
+                <p className="text-sm text-gray-400 font-medium">NFT Certificate System v2.0</p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <div className="glass px-4 py-2 rounded-full">
+                <span className="text-sm font-semibold text-blue-300">✨ LIVE</span>
+              </div>
+              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            </div>
+          </nav>
+        </div>
+      </header>
+    );
+
+    // Main App Component
+    const OnChainScoreApp = () => {
+      const [walletAddress, setWalletAddress] = useState('');
+      const [loading, setLoading] = useState(false);
+      const [analysis, setAnalysis] = useState(null);
+      const [minting, setMinting] = useState(false);
+      const [notification, setNotification] = useState('');
+
+      // Sample wallet addresses for quick testing
+      const sampleWallets = [
+        '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', // Vitalik
+        '0x742d35Cc6634C0532925a3b8D6B9DdE3c78F1C1F', // Sample 1
+        '0x8ba1f109551bD432803012645Hac136c94124a2cc'  // Sample 2
+      ];
+
+      const showNotification = (message) => {
+        setNotification(message);
+        setTimeout(() => setNotification(''), 4000);
+      };
+
+      const analyzeWallet = async () => {
+        if (!walletAddress.trim()) {
+          showNotification('Please enter a wallet address');
+          return;
+        }
+
+        setLoading(true);
+        setAnalysis(null);
+
+        try {
+          const response = await fetch('/api/analyze-wallet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ walletAddress: walletAddress.trim() })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setAnalysis(data);
+            showNotification('✅ Analysis completed successfully!');
+          } else {
+            throw new Error('Analysis failed');
+          }
+        } catch (error) {
+          console.error('Analysis failed:', error);
+          showNotification('❌ Analysis failed. Please try again.');
+        }
+        setLoading(false);
+      };
+
+      const mintNFT = async () => {
+        if (!analysis) return;
+
+        setMinting(true);
+        try {
+          const response = await fetch('/api/mint-certificate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              walletAddress: walletAddress.trim(),
+              score: analysis.score,
+              tier: analysis.tier
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            showNotification(`🎉 NFT Minted! Tx: ${data.transactionHash?.substring(0, 10)}...`);
+          } else {
+            throw new Error('Minting failed');
+          }
+        } catch (error) {
+          console.error('Minting failed:', error);
+          showNotification('❌ Minting failed. Please try again.');
+        }
+        setMinting(false);
+      };
+
+      const getTierClass = (tier) => {
+        const tierClasses = {
+          'S+': 'tier-s-plus', 'S': 'tier-s', 'A+': 'tier-a-plus',
+          'A': 'tier-a', 'B+': 'tier-b-plus', 'B': 'tier-b',
+          'C+': 'tier-c-plus', 'C': 'tier-c', 'D': 'tier-d', 'F': 'tier-f'
+        };
+        return tierClasses[tier] || 'tier-f';
+      };
+
+      const fillSampleWallet = (address) => {
+        setWalletAddress(address);
+      };
+
+      return (
+        <div className="min-h-screen bg-black text-white relative">
+          <BackgroundEffects />
+          <Header />
+
+          {/* Notification */}
+          {notification && (
+            <div className="fixed top-6 right-6 z-50 glass px-6 py-3 rounded-lg animate-fade-in">
+              <p className="text-sm font-medium">{notification}</p>
+            </div>
+          )}
+
+          {/* Main Content */}
+          <main className="relative z-10 max-w-5xl mx-auto px-6 py-8">
+            {/* Hero Section */}
+            <div className="text-center mb-12 animate-slide-up">
+              <h2 className="text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+                Your Web3 Identity
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Analyze your wallet's OnChain activity, get a comprehensive credit score, and mint an NFT certificate to showcase your Web3 reputation across the ecosystem.
+              </p>
+            </div>
+
+            {/* Wallet Input Section */}
+            <div className="glass rounded-3xl p-8 mb-8 animate-fade-in">
+              <h3 className="text-2xl font-bold mb-6 text-center">Enter Wallet Address</h3>
+
+              {/* Sample Wallets */}
+              <div className="mb-6">
+                <p className="text-sm text-gray-400 mb-3">Quick test with sample wallets:</p>
+                <div className="flex flex-wrap gap-2">
+                  {sampleWallets.map((wallet, index) => (
+                    <button
+                      key={index}
+                      onClick={() => fillSampleWallet(wallet)}
+                      className="text-xs px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg font-mono text-gray-300 hover:text-white transition-colors"
+                    >
+                      {`${wallet.substring(0, 6)}...${wallet.substring(wallet.length - 4)}`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col space-y-4">
+                <div className="flex space-x-4">
+                  <input
+                    type="text"
+                    value={walletAddress}
+                    onChange={(e) => setWalletAddress(e.target.value)}
+                    placeholder="0x742d35Cc6634C0532925a3b8D6B9DdE3c78F1C1F"
+                    className="flex-1 bg-black/70 border border-white/20 rounded-2xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-lg font-mono"
+                    onKeyPress={(e) => e.key === 'Enter' && analyzeWallet()}
+                  />
+                  <button
+                    onClick={analyzeWallet}
+                    disabled={loading}
+                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl font-bold text-white hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    {loading ? (
+                      <div className="flex items-center space-x-3">
+                        <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
+                        <span>Analyzing...</span>
+                      </div>
+                    ) : (
+                      '🔍 Analyze Wallet'
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Results Section */}
+            {analysis && (
+              <div className="space-y-8 animate-fade-in">
+                {/* Main Score Card */}
+                <div className="glass rounded-3xl p-8">
+                  <div className="text-center mb-8">
+                    <div className={`inline-flex items-center justify-center w-28 h-28 rounded-3xl text-3xl font-black mb-6 shadow-2xl ${getTierClass(analysis.tier)}`}>
+                      {analysis.tier}
+                    </div>
+                    <h3 className="text-4xl font-black text-white mb-3">{analysis.tierName}</h3>
+                    <div className="text-7xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
+                      {analysis.score}<span className="text-3xl text-gray-500">/{analysis.maxScore}</span>
+                    </div>
+                    <div className="w-full bg-gray-800 rounded-full h-3 mb-4">
+                      <div
+                        className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-1000"
+                        style={{ width: `${(analysis.score / analysis.maxScore) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* Score Breakdown */}
+                  <div className="stats-grid mb-8">
+                    {[
+                      { name: 'Portfolio Value', value: analysis.breakdown.portfolioValue, max: 25, color: 'blue' },
+                      { name: 'Activity Score', value: analysis.breakdown.activityScore, max: 20, color: 'green' },
+                      { name: 'DeFi Engagement', value: analysis.breakdown.defiEngagement, max: 20, color: 'purple' },
+                      { name: 'Diversification', value: analysis.breakdown.diversification, max: 15, color: 'yellow' },
+                      { name: 'Security', value: analysis.breakdown.security, max: 15, color: 'red' }
+                    ].map((stat, index) => (
+                      <div key={index} className="bg-black/40 rounded-2xl p-6 text-center">
+                        <h4 className="text-sm font-semibold text-gray-400 mb-2">{stat.name}</h4>
+                        <div className={`text-3xl font-black text-${stat.color}-400 mb-2`}>
+                          {stat.value}<span className="text-lg text-gray-500">/{stat.max}</span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-2">
+                          <div
+                            className={`bg-${stat.color}-500 h-2 rounded-full transition-all duration-1000`}
+                            style={{ width: `${(stat.value / stat.max) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Badge Preview */}
+                  {analysis.badgeImage && (
+                    <div className="text-center mb-8">
+                      <h4 className="text-lg font-semibold text-gray-300 mb-4">NFT Badge Preview</h4>
+                      <img
+                        src={analysis.badgeImage}
+                        alt={`${analysis.tier} Badge`}
+                        className="w-32 h-32 mx-auto rounded-2xl shadow-2xl ring-4 ring-white/20"
+                      />
+                    </div>
+                  )}
+
+                  {/* Mint Button */}
+                  <div className="text-center">
+                    <button
+                      onClick={mintNFT}
+                      disabled={minting}
+                      className="px-12 py-5 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl font-black text-black hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-2xl hover:shadow-orange-500/25 text-xl"
+                    >
+                      {minting ? (
+                        <div className="flex items-center space-x-3">
+                          <div className="animate-spin w-6 h-6 border-3 border-black border-t-transparent rounded-full"></div>
+                          <span>Minting NFT Certificate...</span>
+                        </div>
+                      ) : (
+                        '🏆 Mint NFT Certificate'
+                      )}
+                    </button>
+                    <p className="text-sm text-gray-400 mt-4">
+                      💎 Mint your score as an NFT certificate on Ethereum Sepolia testnet
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* How It Works */}
+            <div className="glass rounded-3xl p-8 mt-12 animate-fade-in">
+              <h3 className="text-3xl font-bold mb-6 text-center">How It Works</h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  { icon: '🔍', title: 'Analyze', desc: 'We scan your wallet across multiple blockchains using Moralis API' },
+                  { icon: '📊', title: 'Score', desc: 'Calculate your OnChain credit score based on 5 key metrics' },
+                  { icon: '🎖️', title: 'Mint', desc: 'Get your personalized NFT certificate with custom tier badge' }
+                ].map((step, index) => (
+                  <div key={index} className="text-center p-6 bg-black/30 rounded-2xl">
+                    <div className="text-4xl mb-4">{step.icon}</div>
+                    <h4 className="text-xl font-bold mb-2">{step.title}</h4>
+                    <p className="text-gray-400">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // Render the app
+    ReactDOM.render(<OnChainScoreApp />, document.getElementById('root'));
+  </script>
+</body>
+
+</html>

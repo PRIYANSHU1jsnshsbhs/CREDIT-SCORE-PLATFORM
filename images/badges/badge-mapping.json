@@ -1,0 +1,82 @@
+{
+  "S+": {
+    "filename": "S+.png",
+    "path": "images/badges/S+.png",
+    "min_score": 90,
+    "max_score": 100,
+    "description": "S+ Crypto Whale",
+    "tier": "S+"
+  },
+  "S": {
+    "filename": "S.png",
+    "path": "images/badges/S.png",
+    "min_score": 80,
+    "max_score": 89,
+    "description": "S DeFi Expert",
+    "tier": "S"
+  },
+  "A+": {
+    "filename": "A+.png",
+    "path": "images/badges/A+.png",
+    "min_score": 70,
+    "max_score": 79,
+    "description": "A+ Advanced User",
+    "tier": "A+"
+  },
+  "A": {
+    "filename": "A.png",
+    "path": "images/badges/A.png",
+    "min_score": 60,
+    "max_score": 69,
+    "description": "A Experienced User",
+    "tier": "A"
+  },
+  "B+": {
+    "filename": "B+.png",
+    "path": "images/badges/B+.png",
+    "min_score": 50,
+    "max_score": 59,
+    "description": "B+ Active User",
+    "tier": "B+"
+  },
+  "B": {
+    "filename": "B.png",
+    "path": "images/badges/B.png",
+    "min_score": 40,
+    "max_score": 49,
+    "description": "B Regular User",
+    "tier": "B"
+  },
+  "C+": {
+    "filename": "C+.png",
+    "path": "images/badges/C+.png",
+    "min_score": 30,
+    "max_score": 39,
+    "description": "C+ Casual User",
+    "tier": "C+"
+  },
+  "C": {
+    "filename": "C.png",
+    "path": "images/badges/C.png",
+    "min_score": 20,
+    "max_score": 29,
+    "description": "C Beginner",
+    "tier": "C"
+  },
+  "D": {
+    "filename": "D.png",
+    "path": "images/badges/D.png",
+    "min_score": 10,
+    "max_score": 19,
+    "description": "D New User",
+    "tier": "D"
+  },
+  "F": {
+    "filename": "F.png",
+    "path": "images/badges/F.png",
+    "min_score": 0,
+    "max_score": 9,
+    "description": "F Inactive",
+    "tier": "F"
+  }
+}
