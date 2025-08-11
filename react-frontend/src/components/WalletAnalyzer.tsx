@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+// API Configuration
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://creditscoreplatform-production.up.railway.app';
+
 interface WalletAnalysis {
   score: number;
   maxScore: number;
@@ -103,7 +106,7 @@ const WalletAnalyzer = () => {
       if (!/^0x[a-fA-F0-9]{40}$/.test(input) && input.toLowerCase().endsWith('.eth')) {
         setLoadingProgress('🔎 Resolving ENS name...');
         try {
-          const ensRes = await fetch(`/api/resolve-ens?name=${encodeURIComponent(input)}`);
+          const ensRes = await fetch(`${API_BASE_URL}/api/resolve-ens?name=${encodeURIComponent(input)}`);
           if (ensRes.ok) {
             const ens = await ensRes.json();
             input = ens.address;
@@ -121,7 +124,7 @@ const WalletAnalyzer = () => {
         }
       }
 
-      const response = await fetch('/api/calculate-onchain-score', {
+      const response = await fetch(`${API_BASE_URL}/api/calculate-onchain-score`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -191,7 +194,7 @@ const WalletAnalyzer = () => {
 
     setMinting(true);
     try {
-      const response = await fetch('/api/mint-certificate', {
+      const response = await fetch(`${API_BASE_URL}/api/mint-certificate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
