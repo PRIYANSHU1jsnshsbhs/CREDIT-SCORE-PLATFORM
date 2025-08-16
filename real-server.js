@@ -8,8 +8,39 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 9000;
-app.use(cors());
+
+// Enhanced CORS configuration
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001', 
+    'http://localhost:3002',
+    'https://credit-score-platform.vercel.app',
+    'https://creditscoreplatform.vercel.app',
+    /\.vercel\.app$/,  // Allow all Vercel subdomains
+    /localhost:\d+$/   // Allow all localhost ports
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+
 app.use(express.json({ limit: '1mb' }));
+
+// Additional CORS headers middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization,Cache-Control,Pragma');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(204);
+    return;
+  }
+  next();
+});
 
 const ALLOWED_CHAINS = new Set(['eth', 'polygon', 'bsc', 'avalanche', 'arbitrum', 'optimism']);
 
