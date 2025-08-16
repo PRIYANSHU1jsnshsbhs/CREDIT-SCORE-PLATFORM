@@ -724,10 +724,21 @@ app.get('/debug/badge-mapping', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
+  // Check badge file existence
+  const badgeExists = fs.existsSync(path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'));
+  const cwdCheck = fs.existsSync('./images/badges/badge-mapping-ipfs.json');
+  
   res.status(200).json({ 
-    status: 'OK', 
+    status: 'healthy', 
     timestamp: new Date().toISOString(),
-    uptime: process.uptime() 
+    moralisConnected: !!process.env.MORALIS_API_KEY,
+    badgeFileExists: badgeExists,
+    cwdBadgeExists: cwdCheck,
+    cwd: process.cwd(),
+    dirname: __dirname
   });
 });
 
