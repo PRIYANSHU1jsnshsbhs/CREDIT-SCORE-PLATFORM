@@ -8,39 +8,8 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 9000;
-
-// Enhanced CORS configuration
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3001', 
-    'http://localhost:3002',
-    'https://credit-score-platform.vercel.app',
-    'https://creditscoreplatform.vercel.app',
-    /\.vercel\.app$/,  // Allow all Vercel subdomains
-    /localhost:\d+$/   // Allow all localhost ports
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
-
+app.use(cors());
 app.use(express.json({ limit: '1mb' }));
-
-// Additional CORS headers middleware
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization,Cache-Control,Pragma');
-  
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(204);
-    return;
-  }
-  next();
-});
 
 const ALLOWED_CHAINS = new Set(['eth', 'polygon', 'bsc', 'avalanche', 'arbitrum', 'optimism']);
 
@@ -48,21 +17,11 @@ let badgeMapping = {};
 try {
   const ipfsMapPath = path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json');
   const localMapPath = path.join(__dirname, 'images', 'badges', 'badge-mapping.json');
-  
-  console.log('🔍 Looking for badge mapping files:');
-  console.log('🔍 IPFS path:', ipfsMapPath);
-  console.log('🔍 Local path:', localMapPath);
-  console.log('🔍 IPFS exists:', fs.existsSync(ipfsMapPath));
-  console.log('🔍 Local exists:', fs.existsSync(localMapPath));
-  
   if (fs.existsSync(ipfsMapPath)) {
     badgeMapping = JSON.parse(fs.readFileSync(ipfsMapPath, 'utf-8'));
-    console.log('✅ Badge mapping loaded from IPFS file');
   } else if (fs.existsSync(localMapPath)) {
     badgeMapping = JSON.parse(fs.readFileSync(localMapPath, 'utf-8'));
-    console.log('✅ Badge mapping loaded from local file');
   }
-  console.log('🏆 Loaded badge tiers:', Object.keys(badgeMapping));
   console.log('✅ Badge mapping loaded successfully');
 } catch (e) {
   console.warn('⚠️ Failed to load badge mapping, proceeding without images:', e.message);
@@ -554,12 +513,6 @@ app.post('/api/calculate-onchain-score', async (req, res) => {
     const badgeUrl = badgeMapping[tierLetter]?.gateway_url || '';
     const badgeDescription = badgeMapping[tierLetter]?.description || tier;
 
-    // Debug logging for badge URL
-    console.log(`🏆 Looking up badge for tier: "${tierLetter}"`);
-    console.log(`🏆 Badge mapping exists: ${!!badgeMapping[tierLetter]}`);
-    console.log(`🏆 Badge URL: "${badgeUrl}"`);
-    console.log(`🏆 Available tiers: ${Object.keys(badgeMapping).join(', ')}`);
-
     console.log(`✅ REAL score calculated: ${scoreBreakdown.totalScore}/100 - ${tier}`);
     console.log(
       `📊 Breakdown: Portfolio:${scoreBreakdown.components.portfolioScore} Activity:${scoreBreakdown.components.activityScore} DeFi:${scoreBreakdown.components.defiScore} Diversity:${scoreBreakdown.components.diversificationScore} Security:${scoreBreakdown.components.securityScore} Identity:${scoreBreakdown.components.identityScore}`
@@ -637,10 +590,12 @@ app.post('/api/mint-certificate', async (req, res) => {
 
     const nft = initNFTService();
     if (!nft) {
+      console.error('❌ initNFTService returned null - NFT service not initialized.');
       return res.status(500).json({ success: false, error: 'NFT service not initialized' });
     }
 
     if (!nft.isValidAddress(walletAddress)) {
+      console.error('❌ Invalid wallet address format:', walletAddress);
       return res.status(400).json({
         error: 'Invalid wallet address format',
         success: false
@@ -656,23 +611,40 @@ app.post('/api/mint-certificate', async (req, res) => {
 
     console.log(`🎨 Minting REAL NFT certificate for ${walletAddress} with score ${score}`);
 
-    const mintResult = await nft.mintCertificate(walletAddress, score, breakdown);
+    let mintResult;
+    try {
+      mintResult = await nft.mintCertificate(walletAddress, score, breakdown);
+    } catch (e) {
+      console.error('❌ nft.mintCertificate threw an exception:', e);
+      return res.status(500).json({ success: false, error: 'NFT minting threw an exception: ' + (e && e.message ? e.message : String(e)) });
+    }
+
+    if (!mintResult) {
+      console.error('❌ nft.mintCertificate returned null/undefined');
+      return res.status(500).json({ success: false, error: 'NFT minting returned no result' });
+    }
 
     if (mintResult.success) {
-      const imageUrl = badgeMapping[mintResult.tier]?.gateway_url || null;
-      res.json({
-        ...mintResult,
-        etherscanUrl: `https://sepolia.etherscan.io/tx/${mintResult.transactionHash}`,
-        opensea: mintResult.tokenId != null ? `https://testnets.opensea.io/assets/sepolia/0xcfAF8F74F8FD150574C7797506db7F2DD6FbD5aA/${mintResult.tokenId}` : null,
-        metamaskImport: {
-          contractAddress: '0xcfAF8F74F8FD150574C7797506db7F2DD6FbD5aA',
-          tokenId: mintResult.tokenId ?? null,
-          chain: 'sepolia',
-          imageUrl
-        },
-        message: `🎉 REAL Certificate minted successfully! Your ${mintResult.tier} tier badge has been issued on blockchain.`
-      });
+      try {
+        const imageUrl = badgeMapping[mintResult.tier]?.gateway_url || null;
+        res.json({
+          ...mintResult,
+          etherscanUrl: `https://sepolia.etherscan.io/tx/${mintResult.transactionHash}`,
+          opensea: mintResult.tokenId != null ? `https://testnets.opensea.io/assets/sepolia/0xcfAF8F74F8FD150574C7797506db7F2DD6FbD5aA/${mintResult.tokenId}` : null,
+          metamaskImport: {
+            contractAddress: '0xcfAF8F74F8FD150574C7797506db7F2DD6FbD5aA',
+            tokenId: mintResult.tokenId ?? null,
+            chain: 'sepolia',
+            imageUrl
+          },
+          message: `🎉 REAL Certificate minted successfully! Your ${mintResult.tier} tier badge has been issued on blockchain.`
+        });
+      } catch (e) {
+        console.error('❌ Error while preparing mint response:', e);
+        res.status(500).json({ success: false, error: 'Error preparing mint response: ' + (e && e.message ? e.message : String(e)) });
+      }
     } else {
+      console.error('❌ Minting failed, mintResult:', mintResult);
       res.status(500).json({ success: false, error: mintResult.error || 'Failed to mint certificate' });
     }
   } catch (error) {
@@ -681,69 +653,16 @@ app.post('/api/mint-certificate', async (req, res) => {
   }
 });
 
-app.get('/debug/badge-mapping', (req, res) => {
-  const fs = require('fs');
-  const path = require('path');
-  
-  const debugInfo = {
-    cwd: process.cwd(),
-    fileExists: {},
-    badgeMapping: null,
-    error: null
-  };
-  
-  try {
-    // Check both possible paths
-    const paths = [
-      path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'),
-      './images/badges/badge-mapping-ipfs.json',
-      'images/badges/badge-mapping-ipfs.json'
-    ];
-    
-    paths.forEach((filepath, index) => {
-      debugInfo.fileExists[`path${index}`] = {
-        path: filepath,
-        exists: fs.existsSync(filepath)
-      };
-    });
-    
-    // Try to read the badge mapping
-    if (fs.existsSync(path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'))) {
-      const data = fs.readFileSync(path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'), 'utf8');
-      debugInfo.badgeMapping = JSON.parse(data);
-    } else if (fs.existsSync('./images/badges/badge-mapping-ipfs.json')) {
-      const data = fs.readFileSync('./images/badges/badge-mapping-ipfs.json', 'utf8');
-      debugInfo.badgeMapping = JSON.parse(data);
-    }
-    
-    res.json(debugInfo);
-  } catch (error) {
-    debugInfo.error = error.message;
-    res.json(debugInfo);
-  }
-});
-
 app.get('/health', (req, res) => {
-  const fs = require('fs');
-  const path = require('path');
-  
-  // Check badge file existence
-  const badgeExists = fs.existsSync(path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'));
-  const cwdCheck = fs.existsSync('./images/badges/badge-mapping-ipfs.json');
-  
-  res.status(200).json({ 
-    status: 'healthy', 
+  res.json({
+    status: 'healthy',
     timestamp: new Date().toISOString(),
-    moralisConnected: !!process.env.MORALIS_API_KEY,
-    moralisKeys: Object.keys(moralisClients).length,
-    activeKeyIndex: currentKeyIndex,
+    moralisConnected: MORALIS_KEYS.length > 0,
+    moralisKeys: MORALIS_KEYS.length,
+    activeKeyIndex: moralisKeyIndex,
     cacheSize: cache.size,
-    cacheTtlSeconds: CACHE_TTL_SECONDS,
-    nftServiceReady: true,
-    badgeFileExists: badgeExists,
-    cwdBadgeExists: cwdCheck,
-    cwd: process.cwd(),
-    dirname: __dirname
+    cacheTtlSeconds: Math.floor(CACHE_TTL_MS / 1000),
+    nftServiceReady: !!nftService
   });
 });
 
