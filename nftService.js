@@ -3,9 +3,13 @@ require('dotenv').config();
 
 const CONTRACT_ADDRESS = '0xcfAF8F74F8FD150574C7797506db7F2DD6FbD5aA';
 let SEPOLIA_RPC_CANDIDATES = [
-  'https://1rpc.io/sepolia',
   'https://rpc.sepolia.org',
+  'https://ethereum-sepolia-rpc.publicnode.com',
   'https://sepolia.drpc.org',
+  'https://sepolia.gateway.tenderly.co',
+  'https://rpc2.sepolia.org',
+  'https://ethereum-sepolia.blockpi.network/v1/rpc/public',
+  'https://1rpc.io/sepolia',
   process.env.SEPOLIA_RPC_URL,
   process.env.ALCHEMY_SEPOLIA_RPC_URL,
   process.env.INFURA_SEPOLIA_RPC_URL
