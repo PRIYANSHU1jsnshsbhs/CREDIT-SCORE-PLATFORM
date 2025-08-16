@@ -544,6 +544,12 @@ app.post('/api/calculate-onchain-score', async (req, res) => {
     const badgeUrl = badgeMapping[tierLetter]?.gateway_url || '';
     const badgeDescription = badgeMapping[tierLetter]?.description || tier;
 
+    // Debug logging for badge URL
+    console.log(`🏆 Looking up badge for tier: "${tierLetter}"`);
+    console.log(`🏆 Badge mapping exists: ${!!badgeMapping[tierLetter]}`);
+    console.log(`🏆 Badge URL: "${badgeUrl}"`);
+    console.log(`🏆 Available tiers: ${Object.keys(badgeMapping).join(', ')}`);
+
     console.log(`✅ REAL score calculated: ${scoreBreakdown.totalScore}/100 - ${tier}`);
     console.log(
       `📊 Breakdown: Portfolio:${scoreBreakdown.components.portfolioScore} Activity:${scoreBreakdown.components.activityScore} DeFi:${scoreBreakdown.components.defiScore} Diversity:${scoreBreakdown.components.diversificationScore} Security:${scoreBreakdown.components.securityScore} Identity:${scoreBreakdown.components.identityScore}`
