@@ -7,7 +7,6 @@ react-frontend/node_modules/
 .DS_Store
 screenshots/
 flowchart/
-images/
 cache/
 broadcast/
 out/
