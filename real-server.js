@@ -666,6 +666,24 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Debug: show environment and badge mapping status (safe to expose non-secret info)
+app.get('/debug/env', (req, res) => {
+  try {
+    return res.json({
+      NODE_ENV: process.env.NODE_ENV || 'undefined',
+      PORT: process.env.PORT || null,
+      PRIVATE_KEY_SET: !!process.env.PRIVATE_KEY,
+      MORALIS_KEYS: MORALIS_KEYS.length,
+      badgeMappingKeys: Object.keys(badgeMapping || {}),
+      pid: process.pid,
+      cwd: process.cwd(),
+      dirname: __dirname
+    });
+  } catch (e) {
+    return res.status(500).json({ error: 'Failed to get env info', message: e.message });
+  }
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'modern-react-nft.html'));
 });
