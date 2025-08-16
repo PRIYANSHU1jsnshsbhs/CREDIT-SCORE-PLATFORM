@@ -681,16 +681,53 @@ app.post('/api/mint-certificate', async (req, res) => {
   }
 });
 
+app.get('/debug/badge-mapping', (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
+  const debugInfo = {
+    cwd: process.cwd(),
+    fileExists: {},
+    badgeMapping: null,
+    error: null
+  };
+  
+  try {
+    // Check both possible paths
+    const paths = [
+      path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'),
+      './images/badges/badge-mapping-ipfs.json',
+      'images/badges/badge-mapping-ipfs.json'
+    ];
+    
+    paths.forEach((filepath, index) => {
+      debugInfo.fileExists[`path${index}`] = {
+        path: filepath,
+        exists: fs.existsSync(filepath)
+      };
+    });
+    
+    // Try to read the badge mapping
+    if (fs.existsSync(path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'))) {
+      const data = fs.readFileSync(path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json'), 'utf8');
+      debugInfo.badgeMapping = JSON.parse(data);
+    } else if (fs.existsSync('./images/badges/badge-mapping-ipfs.json')) {
+      const data = fs.readFileSync('./images/badges/badge-mapping-ipfs.json', 'utf8');
+      debugInfo.badgeMapping = JSON.parse(data);
+    }
+    
+    res.json(debugInfo);
+  } catch (error) {
+    debugInfo.error = error.message;
+    res.json(debugInfo);
+  }
+});
+
 app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
+  res.status(200).json({ 
+    status: 'OK', 
     timestamp: new Date().toISOString(),
-    moralisConnected: MORALIS_KEYS.length > 0,
-    moralisKeys: MORALIS_KEYS.length,
-    activeKeyIndex: moralisKeyIndex,
-    cacheSize: cache.size,
-    cacheTtlSeconds: Math.floor(CACHE_TTL_MS / 1000),
-    nftServiceReady: !!nftService
+    uptime: process.uptime() 
   });
 });
 
