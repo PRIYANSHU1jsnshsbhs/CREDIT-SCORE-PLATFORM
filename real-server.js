@@ -590,8 +590,8 @@ app.post('/api/mint-certificate', async (req, res) => {
 
     const nft = initNFTService();
     if (!nft) {
-      console.error('❌ initNFTService returned null - NFT service not initialized.');
-      return res.status(500).json({ success: false, error: 'NFT service not initialized' });
+      console.error('❌ initNFTService returned null - NFT service not initialized. Minting unavailable.');
+      return res.status(503).json({ success: false, error: 'NFT service unavailable. Set PRIVATE_KEY and RPC env vars in .env and restart the server to enable minting.' });
     }
 
     if (!nft.isValidAddress(walletAddress)) {
