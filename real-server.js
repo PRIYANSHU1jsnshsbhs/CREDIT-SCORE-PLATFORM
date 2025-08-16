@@ -48,11 +48,21 @@ let badgeMapping = {};
 try {
   const ipfsMapPath = path.join(__dirname, 'images', 'badges', 'badge-mapping-ipfs.json');
   const localMapPath = path.join(__dirname, 'images', 'badges', 'badge-mapping.json');
+  
+  console.log('🔍 Looking for badge mapping files:');
+  console.log('🔍 IPFS path:', ipfsMapPath);
+  console.log('🔍 Local path:', localMapPath);
+  console.log('🔍 IPFS exists:', fs.existsSync(ipfsMapPath));
+  console.log('🔍 Local exists:', fs.existsSync(localMapPath));
+  
   if (fs.existsSync(ipfsMapPath)) {
     badgeMapping = JSON.parse(fs.readFileSync(ipfsMapPath, 'utf-8'));
+    console.log('✅ Badge mapping loaded from IPFS file');
   } else if (fs.existsSync(localMapPath)) {
     badgeMapping = JSON.parse(fs.readFileSync(localMapPath, 'utf-8'));
+    console.log('✅ Badge mapping loaded from local file');
   }
+  console.log('🏆 Loaded badge tiers:', Object.keys(badgeMapping));
   console.log('✅ Badge mapping loaded successfully');
 } catch (e) {
   console.warn('⚠️ Failed to load badge mapping, proceeding without images:', e.message);
