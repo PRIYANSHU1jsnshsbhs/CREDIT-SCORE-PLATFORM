@@ -215,6 +215,9 @@ const WalletAnalyzer = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Minted NFT data received:', data);
+        console.log('tokenURI:', data.tokenURI);
+        console.log('metamaskImport:', data.metamaskImport);
         setMintInfo({ ...data });
         showNotification('✅ NFT Certificate minted successfully! 🎉');
         console.log('Minted NFT:', data);
@@ -445,7 +448,7 @@ const WalletAnalyzer = () => {
                 </div>
 
                 {/* IPFS Action Buttons */}
-                {(mintInfo?.tokenURI || mintInfo?.metamaskImport?.imageUrl) && (
+                {mintInfo && (mintInfo?.tokenURI || mintInfo?.metamaskImport?.imageUrl || mintInfo?.transactionHash) && (
                   <div className="flex justify-center">
                     <div className="flex gap-4 items-center flex-wrap">
                       {mintInfo?.tokenURI && (
@@ -474,7 +477,7 @@ const WalletAnalyzer = () => {
                             <span>View Image</span>
                           </span>
                         </button>
-                      ) : mintInfo?.metamaskImport?.imageUrl && (
+                      ) : mintInfo?.metamaskImport?.imageUrl ? (
                         <a
                           href={mintInfo.metamaskImport.imageUrl}
                           target="_blank"
@@ -485,6 +488,42 @@ const WalletAnalyzer = () => {
                           <span className="relative flex items-center space-x-2">
                             <span className="text-xl">🏆</span>
                             <span>View Badge</span>
+                          </span>
+                        </a>
+                      ) : (
+                        <div className="text-center text-gray-400 text-sm py-2">
+                          NFT data is loading... Check browser console for details.
+                        </div>
+                      )}
+
+                      {/* Always show View NFT button if we have a tokenId and opensea link */}
+                      {mintInfo?.opensea && (
+                        <a
+                          href={mintInfo.opensea}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group relative px-6 py-3 bg-gradient-to-r from-green-600/20 to-teal-600/20 hover:from-green-600/40 hover:to-teal-600/40 border border-green-500/30 hover:border-green-400/50 rounded-xl text-white font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/25"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-teal-600 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                          <span className="relative flex items-center space-x-2">
+                            <span className="text-xl">🌊</span>
+                            <span>View NFT on OpenSea</span>
+                          </span>
+                        </a>
+                      )}
+
+                      {/* Always show transaction link if we have transaction hash */}
+                      {mintInfo?.transactionHash && (
+                        <a
+                          href={mintInfo.etherscanUrl || `https://sepolia.etherscan.io/tx/${mintInfo.transactionHash}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group relative px-6 py-3 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 hover:from-indigo-600/40 hover:to-purple-600/40 border border-indigo-500/30 hover:border-indigo-400/50 rounded-xl text-white font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                          <span className="relative flex items-center space-x-2">
+                            <span className="text-xl">🔗</span>
+                            <span>View Transaction</span>
                           </span>
                         </a>
                       )}
